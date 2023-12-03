@@ -1,42 +1,12 @@
 Rails.application.routes.draw do
-  
-  # Routes for the Comment resource:
 
-  # CREATE
-  post("/insert_comment", { :controller => "comments", :action => "create" })
-          
-  # READ
-  get("/comments", { :controller => "comments", :action => "index" })
-  
-  get("/comments/:path_id", { :controller => "comments", :action => "show" })
-  
-  # UPDATE
-  
-  post("/modify_comment/:path_id", { :controller => "comments", :action => "update" })
-  
-  # DELETE
-  get("/delete_comment/:path_id", { :controller => "comments", :action => "destroy" })
+  #get("/", { :controller => "users", :action => "index"})
 
-  #------------------------------
+  get("/users", { :controller => "users", :action => "index"}) 
 
-  # Routes for the Follow request resource:
+  put("/users", {:controller => "users", :action => "afterForm"})
 
-  # CREATE
-  post("/insert_follow_request", { :controller => "follow_requests", :action => "create" })
-          
-  # READ
-  get("/follow_requests", { :controller => "follow_requests", :action => "index" })
-  
-  get("/follow_requests/:path_id", { :controller => "follow_requests", :action => "show" })
-  
-  # UPDATE
-  
-  post("/modify_follow_request/:path_id", { :controller => "follow_requests", :action => "update" })
-  
-  # DELETE
-  get("/delete_follow_request/:path_id", { :controller => "follow_requests", :action => "destroy" })
-
-  #------------------------------
+  #get("/users/:user_name_p", { :controller => "users", :action => "userProfile" })
 
   # Routes for the Like resource:
 
@@ -57,6 +27,50 @@ Rails.application.routes.draw do
 
   #------------------------------
 
+  # Routes for the Follow request resource:
+
+  # CREATE
+  post("/insert_follow_request", { :controller => "follow_requests", :action => "create" })
+          
+  # READ
+  get("/follow_requests", { :controller => "follow_requests", :action => "index" })
+  
+  get("/follow_requests/:path_id", { :controller => "follow_requests", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_follow_request/:path_id", { :controller => "follow_requests", :action => "update" })
+  
+  # DELETE
+  get("/delete_follow_request/:path_id", { :controller => "follow_requests", :action => "destroy" })
+
+  get("/delete_follow_request_from_profile/:path_id", { :controller => "follow_requests", :action => "destroyAndStay" })
+
+  #------------------------------
+
+  # Routes for the Comment resource:
+
+  # CREATE
+  post("/insert_comment", { :controller => "comments", :action => "create" })
+          
+  # READ
+  get("/comments", { :controller => "comments", :action => "index" })
+  
+  get("/comments/:path_id", { :controller => "comments", :action => "show" })
+  
+  # UPDATE
+  
+  post("/modify_comment/:path_id", { :controller => "comments", :action => "update" })
+  
+  # DELETE
+  get("/delete_comment/:path_id", { :controller => "comments", :action => "destroy" })
+
+  #------------------------------
+
+  devise_for :users, controllers: {registrations: 'registrations'}
+  get("/users/:user_name_p", { :controller => "users", :action => "userProfile" })
+
+  root "users#index"
   # Routes for the Photo resource:
 
   # CREATE
@@ -74,14 +88,14 @@ Rails.application.routes.draw do
   # DELETE
   get("/delete_photo/:path_id", { :controller => "photos", :action => "destroy" })
 
+  # EDIT 
+  #get("/users/edit", {:controller => "users", :action => "edit"})
+
   #------------------------------
 
-  devise_for :users
-
-  root "users#index"
-  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
   # root "articles#index"
 end
+

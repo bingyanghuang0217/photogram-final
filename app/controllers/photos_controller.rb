@@ -1,4 +1,7 @@
 class PhotosController < ApplicationController
+  skip_before_action(:authenticate_user!, { :only => [:index] })
+  CommentStruct = Struct.new(:authorName, :commentTxt, :dateInWords )
+
   def index
     matching_photos = Photo.all
 
@@ -10,18 +13,29 @@ class PhotosController < ApplicationController
   def show
     the_id = params.fetch("path_id")
 
-    matching_photos = Photo.where({ :id => the_id })
+    @the_photo = Photo.where(id: the_id).first
 
-    @the_photo = matching_photos.at(0)
+    matching_comments = Comment.where({:photo => the_id})
+    @list_comment_structs = matching_comments.map do |comment_iter |
+      commenter = User.find(comment_iter.author_id)
+      CommentStruct.new(commenter.username, comment_iter.body, comment_iter.created_at  )
+    end 
+
 
     render({ :template => "photos/show" })
   end
 
   def create
     the_photo = Photo.new
-    the_photo.user_id = params.fetch("query_user_id")
-    the_photo.image = params.fetch("query_image")
     the_photo.caption = params.fetch("query_caption")
+    the_photo.comments_count = 0
+    #if params.include?(:uploadsource)
+    the_photo.image = params.fetch("query_image")
+    #else 
+    #  the_photo.image = params.fetch("query_image")
+    #end
+    the_photo.likes_count = 0
+    the_photo.owner_id = current_user.id 
 
     if the_photo.valid?
       the_photo.save
@@ -35,9 +49,15 @@ class PhotosController < ApplicationController
     the_id = params.fetch("path_id")
     the_photo = Photo.where({ :id => the_id }).at(0)
 
-    the_photo.user_id = params.fetch("query_user_id")
-    the_photo.image = params.fetch("query_image")
     the_photo.caption = params.fetch("query_caption")
+    the_photo.comments_count = params.fetch("query_comments_count")
+    if params.include?(:uploadsource)
+      the_photo.image = params.fetch(:uploadsource)
+    else 
+      the_photo.image = params.fetch("query_image")
+    end
+    the_photo.likes_count = params.fetch("query_likes_count")
+    the_photo.owner_id = params.fetch("query_owner_id")
 
     if the_photo.valid?
       the_photo.save
@@ -56,3 +76,4 @@ class PhotosController < ApplicationController
     redirect_to("/photos", { :notice => "Photo deleted successfully."} )
   end
 end
+

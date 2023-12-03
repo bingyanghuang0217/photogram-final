@@ -16,19 +16,11 @@
 
     <form action="/insert_comment" method="post">
       <div>
-        <label for="photo_id_box">
-          Photo
+        <label for="author_id_box">
+          Author
         </label>
 
-        <input type="text" id="photo_id_box" name="query_photo_id">
-      </div>
-
-      <div>
-        <label for="user_id_box">
-          User
-        </label>
-
-        <input type="text" id="user_id_box" name="query_user_id">
+        <input type="text" id="author_id_box" name="query_author_id">
       </div>
 
       <div>
@@ -37,6 +29,14 @@
         </label>
 
         <textarea id="body_box" name="query_body" rows="3"></textarea>
+      </div>
+
+      <div>
+        <label for="photo_id_box">
+          Photo
+        </label>
+
+        <input type="text" id="photo_id_box" name="query_photo_id">
       </div>
 
       <button>
@@ -56,15 +56,15 @@
         </th>
 
         <th>
-          Photo
-        </th>
-
-        <th>
-          User
+          Author
         </th>
 
         <th>
           Body
+        </th>
+
+        <th>
+          Photo
         </th>
 
         <th>
@@ -86,15 +86,15 @@
         </td>
 
         <td>
-          <%= a_comment.photo_id %>
-        </td>
-
-        <td>
-          <%= a_comment.user_id %>
+          <%= a_comment.author_id %>
         </td>
 
         <td>
           <%= a_comment.body %>
+        </td>
+
+        <td>
+          <%= a_comment.photo_id %>
         </td>
 
         <td>
@@ -116,3 +116,4 @@
 </div>
 
 <hr>
+
